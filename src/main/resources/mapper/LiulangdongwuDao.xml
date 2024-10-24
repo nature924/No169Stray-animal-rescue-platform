@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.LiulangdongwuDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.liulangdongwu_name as liulangdongwuName
+        ,a.liulangdongwu_photo as liulangdongwuPhoto
+        ,a.liulangdongwu_types as liulangdongwuTypes
+        ,a.liulangdongwu_erji_types as liulangdongwuErjiTypes
+        ,a.liulangdongwu_age as liulangdongwuAge
+        ,a.liulangdongwu_jiezhong as liulangdongwuJiezhong
+        ,a.xingbie_types as xingbieTypes
+        ,a.liulangdongwu_zuyangjin as liulangdongwuZuyangjin
+        ,a.liulangdongwu_content as liulangdongwuContent
+        ,a.dongwu_zhuangtai_types as dongwuZhuangtaiTypes
+        ,a.liulangdongwu_delete as liulangdongwuDelete
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.LiulangdongwuView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        <!-- 级联表的字段 -->
+
+        FROM liulangdongwu  a
+
+        <where>
+            <if test="params.ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="params.ids" open="(" separator="," close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test=" params.liulangdongwuName != '' and params.liulangdongwuName != null and params.liulangdongwuName != 'null' ">
+                and a.liulangdongwu_name like CONCAT('%',#{params.liulangdongwuName},'%')
+            </if>
+            <if test="params.liulangdongwuTypes != null and params.liulangdongwuTypes != ''">
+                and a.liulangdongwu_types = #{params.liulangdongwuTypes}
+            </if>
+            <if test="params.liulangdongwuErjiTypes != null and params.liulangdongwuErjiTypes != ''">
+                and a.liulangdongwu_erji_types = #{params.liulangdongwuErjiTypes}
+            </if>
+            <if test="params.liulangdongwuAgeStart != null and params.liulangdongwuAgeStart != ''">
+                <![CDATA[  and a.liulangdongwu_age >= #{params.liulangdongwuAgeStart}   ]]>
+            </if>
+            <if test="params.liulangdongwuAgeEnd != null and params.liulangdongwuAgeEnd != ''">
+                <![CDATA[  and a.liulangdongwu_age <= #{params.liulangdongwuAgeEnd}   ]]>
+            </if>
+             <if test="params.liulangdongwuAge != null and params.liulangdongwuAge != ''">
+                and a.liulangdongwu_age = #{params.liulangdongwuAge}
+             </if>
+            <if test=" params.liulangdongwuJiezhong != '' and params.liulangdongwuJiezhong != null and params.liulangdongwuJiezhong != 'null' ">
+                and a.liulangdongwu_jiezhong like CONCAT('%',#{params.liulangdongwuJiezhong},'%')
+            </if>
+            <if test="params.xingbieTypes != null and params.xingbieTypes != ''">
+                and a.xingbie_types = #{params.xingbieTypes}
+            </if>
+            <if test="params.liulangdongwuZuyangjinStart != null ">
+                <![CDATA[  and a.liulangdongwu_zuyangjin >= #{params.liulangdongwuZuyangjinStart}   ]]>
+            </if>
+            <if test="params.liulangdongwuZuyangjinEnd != null ">
+                <![CDATA[  and a.liulangdongwu_zuyangjin <= #{params.liulangdongwuZuyangjinEnd}   ]]>
+            </if>
+            <if test=" params.liulangdongwuContent != '' and params.liulangdongwuContent != null and params.liulangdongwuContent != 'null' ">
+                and a.liulangdongwu_content like CONCAT('%',#{params.liulangdongwuContent},'%')
+            </if>
+            <if test="params.dongwuZhuangtaiTypes != null and params.dongwuZhuangtaiTypes != ''">
+                and a.dongwu_zhuangtai_types = #{params.dongwuZhuangtaiTypes}
+            </if>
+            <if test="params.liulangdongwuDeleteStart != null and params.liulangdongwuDeleteStart != ''">
+                <![CDATA[  and a.liulangdongwu_delete >= #{params.liulangdongwuDeleteStart}   ]]>
+            </if>
+            <if test="params.liulangdongwuDeleteEnd != null and params.liulangdongwuDeleteEnd != ''">
+                <![CDATA[  and a.liulangdongwu_delete <= #{params.liulangdongwuDeleteEnd}   ]]>
+            </if>
+             <if test="params.liulangdongwuDelete != null and params.liulangdongwuDelete != ''">
+                and a.liulangdongwu_delete = #{params.liulangdongwuDelete}
+             </if>
+
+        </where>
+        order by a.${params.sort} ${params.order}
+    </select>
+
+</mapper>
